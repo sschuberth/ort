@@ -20,6 +20,7 @@
 package org.ossreviewtoolkit.model.config
 
 import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.ExperimentalHoplite
 import com.sksamuel.hoplite.PropertySource
 import com.sksamuel.hoplite.addEnvironmentSource
 import com.sksamuel.hoplite.fp.getOrElse
@@ -170,10 +171,12 @@ data class OrtConfiguration(
                 }
             )
 
+            @OptIn(ExperimentalHoplite::class)
             val loader = ConfigLoaderBuilder.default()
                 .addEnvironmentSource()
                 .addPropertySources(sources)
                 .withContextResolverMode(ContextResolverMode.SkipUnresolved)
+                .withExplicitSealedTypes()
                 .build()
 
             val configResult = loader.loadConfig<OrtConfigurationWrapper>()
